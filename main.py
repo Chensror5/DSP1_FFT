@@ -100,7 +100,7 @@ def FFT_2D(x):
         mat[:, i] = FFT(x[:, i])
     for i in range(x.shape[0]):
         mat[i, :] = FFT(mat[i, :])
-    return mat[:x.shape[0],:x.shape[1]]
+    return mat
 
 def IFFT_2D(x):
     N, M = x.shape[0], x.shape[1]
@@ -172,14 +172,29 @@ plt.ylabel("Amplitude")
 plt.xlabel(r'${\omega}$')
 plt.show()
 
+
+fig, axs1 = plt.subplots(1, 2)
+plt.subplots_adjust(wspace=0.2, hspace=0.4)
+
 x2_restored = cyclic_convolution_2D(dist_image_2, imp_resp_image)
 x2_restored_abs = np.abs(x2_restored)
-plt.imshow(x2_restored_abs)
-plt.title(r'${h}_{0} \circledast w[n]$')
-plt.ylabel("Amplitude")
-plt.xlabel(r'${\omega}$')
+x2_restored_abs = x2_restored_abs[:70, :170]
+axs1[0].imshow(x2_restored_abs, cmap = 'gray')
+axs1[0].set_title(r'${h}_{0} our own w[n]$')
+
+
+print("here")
+
+
+
+x2_restored_fft2 = np.fft.ifft2(np.fft.fft2(dist_image_2) * np.fft.fft2(np.pad(imp_resp_image, ((0,70-3), (0, 170-5)), 'constant')))
+x2_restored_fft2_abs = np.abs(x2_restored_fft2)
+x2_restored_fft2_abs = x2_restored_fft2_abs[:70, :170]
+axs1[1].imshow(x2_restored_fft2_abs, cmap = 'gray')
+axs1[1].set_title(r'${h}_{0} fft func w[n]$')
+
+print("here")
+  
+
+
 plt.show()
-
-
-
-
