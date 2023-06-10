@@ -5,6 +5,7 @@
 #   Yoav Allinson         206036949
 #   Chen Yaakov Sror      203531645
 ########################################################################################
+
 import numpy as np
 import matplotlib.pyplot as plt
 # from matlabcall_test import dist_image_1, dist_image_2, noised_image, imp_resp_image # after using the matlab engine we diabled it to save time - all the images are saved as npz files
@@ -20,6 +21,7 @@ imp_resp_image =np.load('imp_resp_image_yoav.npz')['arr_0']
 noised_image =np.load('noised_image_yoav.npz')['arr_0']
 
 print("If value is True - Detimation in time", d % 0.1 < 0.05) # True
+
 print("\n")
 #dezimation in time
 
@@ -34,15 +36,17 @@ def FFT(x, flag = True):
             zeros_to_pad = getnextpow2(len(x)) - len(x)
             x = np.pad(x, (0, zeros_to_pad), "constant")
             flag = False
-    
+            
     N = len(x)
     
     if N == 1:
         return x
     else:
+
         X_even = FFT(x[::2], flag)
         X_odd = FFT(x[1::2], flag)
         factor = np.exp(-2j*np.pi*np.arange(N)/ N)
+
         X = np.concatenate([X_even+factor[:int(N/2)]*X_odd, X_even+factor[int(N/2):]*X_odd])
         return X
     
@@ -72,8 +76,6 @@ def cyclic_convolution_2D(x,h):
     Y = IFFT_2D(X * H)
     return Y
 
-
-
 def linear_convolution_2D(x,h):
     N1 ,M1 = x.shape
     N2,M2 = h.shape
@@ -87,8 +89,6 @@ def linear_convolution_2D(x,h):
     return np.resize(Y,x.shape)
 
 ######## move to utils! #######
-
-
 
 
 ########################################################################################
@@ -107,6 +107,7 @@ for i in range(N):
             x[i][j] = 1
         else:
             x[i][j] = 0
+
 
 #   Part 1.d
 def FFT_2D(x):
@@ -290,3 +291,4 @@ fig.suptitle(r'$Z_{2}(e^{j\omega})$ k = [0,128]')
 plt.stem(w_m,abs(Z_2_k[::256]))
 plt.savefig('pictures/q2_F_Z_2_ejw.png')
 plt.close()
+

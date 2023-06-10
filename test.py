@@ -15,3 +15,4 @@ def dft_2d(matrix):
                     dft_matrix[u, v] += matrix[x, y] * np.exp(-1j * angle)
 
     return dft_matrix
+
