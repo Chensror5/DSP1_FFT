@@ -16,12 +16,3 @@ def dft_2d(matrix):
 
     return dft_matrix
 
-# Example usage
-dist_image_1
-
-return_mat = dft_2d(dist_image_1)
-magnitude_spectrum = np.abs(return_mat)
-plt.imshow(magnitude_spectrum, cmap='gray')
-plt.colorbar()
-plt.title('2D DFT Magnitude Spectrum')
-plt.show()
