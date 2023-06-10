@@ -14,33 +14,35 @@ d_1 = 0.206036949
 d_2 = 0.203531645
 d = (d_1 + d_2) % 0.5
 
-print("If value is True - Detimation in time", d%0.1 < 0.05) # True
+np.savez("dist_image_1_yoav.npz",dist_image_1)
+np.savez("dist_image_2_yoav.npz",dist_image_2)
+np.savez("noised_image_yoav.npz",noised_image)
+np.savez("imp_resp_image_yoav.mpz",imp_resp_image)
+
+print("If value is True - Detimation in time", d % 0.1 < 0.05) # True
 print("\n")
 #dezimation in time
 
 ########################################################################################
 #           Introduction Part - Implementation of FFT and IFFT Algorithm 
 ########################################################################################
-def FFT(x):
-    """
-    A recursive implementation of 
-    the 1D Cooley-Tukey FFT, the 
-    input should have a length of 
-    power of 2. 
-    """
-    if not ispowerof2(len(x)):
-        zeros_to_pad = getnextpow2(len(x)) - len(x)
-        x = np.pad(x, (0, zeros_to_pad), "constant")
+
+def FFT(x, flag = True):
+    if flag:
+    # Check if the input serie is not a power of 2, and pad it to a power of 2 accordingly
+        if not ispowerof2(len(x)):
+            zeros_to_pad = getnextpow2(len(x)) - len(x)
+            x = np.pad(x, (0, zeros_to_pad), "constant")
+            flag = False
     
     N = len(x)
     
     if N == 1:
         return x
     else:
-        X_even = FFT(x[::2])
-        X_odd = FFT(x[1::2])
+        X_even = FFT(x[::2], flag)
+        X_odd = FFT(x[1::2], flag)
         factor = np.exp(-2j*np.pi*np.arange(N)/ N)
-        
         X = np.concatenate([X_even+factor[:int(N/2)]*X_odd, X_even+factor[int(N/2):]*X_odd])
         return X
     
